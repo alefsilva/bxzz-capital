@@ -2,7 +2,7 @@
 @use 'styles/mixins' as m;
 
 // ─── Block ────────────────────────────────────────────────────────────────────
-.b-capital-portfolio-summary {
+.bxzz-capital-portfolio-summary {
   @include m.card-surface;
   @include m.flex-column;
   gap: v.$spacing-5;

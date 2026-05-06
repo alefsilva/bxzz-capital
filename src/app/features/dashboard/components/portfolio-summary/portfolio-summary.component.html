@@ -1,32 +1,32 @@
-<section class="b-capital-portfolio-summary">
+<section class="bxzz-capital-portfolio-summary">
 
-  <header class="b-capital-portfolio-summary__header">
-    <h2 class="b-capital-portfolio-summary__title">Portfólio</h2>
-    <span class="b-capital-portfolio-summary__count">
+  <header class="bxzz-capital-portfolio-summary__header">
+    <h2 class="bxzz-capital-portfolio-summary__title">Portfólio</h2>
+    <span class="bxzz-capital-portfolio-summary__count">
       {{ summary().assetCount }} ativo{{ summary().assetCount !== 1 ? 's' : '' }}
     </span>
   </header>
 
-  <div class="b-capital-portfolio-summary__total">
-    <span class="b-capital-portfolio-summary__label">Valor Atual</span>
-    <span class="b-capital-portfolio-summary__value">
+  <div class="bxzz-capital-portfolio-summary__total">
+    <span class="bxzz-capital-portfolio-summary__label">Valor Atual</span>
+    <span class="bxzz-capital-portfolio-summary__value">
       {{ summary().totalCurrentValue | currency:'USD':'symbol':'1.2-2' }}
     </span>
   </div>
 
-  <div class="b-capital-portfolio-summary__metrics">
+  <div class="bxzz-capital-portfolio-summary__metrics">
 
-    <div class="b-capital-portfolio-summary__metric">
-      <span class="b-capital-portfolio-summary__label">Investido</span>
-      <span class="b-capital-portfolio-summary__metric-value">
+    <div class="bxzz-capital-portfolio-summary__metric">
+      <span class="bxzz-capital-portfolio-summary__label">Investido</span>
+      <span class="bxzz-capital-portfolio-summary__metric-value">
         {{ summary().totalInvestedValue | currency:'USD':'symbol':'1.2-2' }}
       </span>
     </div>
 
-    <div class="b-capital-portfolio-summary__metric">
-      <span class="b-capital-portfolio-summary__label">Resultado (P&L)</span>
+    <div class="bxzz-capital-portfolio-summary__metric">
+      <span class="bxzz-capital-portfolio-summary__label">Resultado (P&L)</span>
       <span
-        class="b-capital-portfolio-summary__pnl"
+        class="bxzz-capital-portfolio-summary__pnl"
         [ngClass]="pnlClass()"
       >
         {{ pnlSign() }}{{ summary().totalProfitLoss | currency:'USD':'symbol':'1.2-2' }}
