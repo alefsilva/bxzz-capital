@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { AssetCardComponent } from './components/asset-card/asset-card.component';
 import { PortfolioSummaryComponent } from './components/portfolio-summary/portfolio-summary.component';
 import { SkeletonComponent } from '../../shared/components/skeleton/skeleton.component';
+import { LogoComponent } from '../../shared/components/logo/logo.component';
 import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
 
 /**
@@ -28,7 +29,7 @@ import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
 @Component({
   selector: 'bc-dashboard',
   standalone: true,
-  imports: [DatePipe, AssetCardComponent, PortfolioSummaryComponent, SkeletonComponent],
+  imports: [DatePipe, AssetCardComponent, PortfolioSummaryComponent, SkeletonComponent, LogoComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
