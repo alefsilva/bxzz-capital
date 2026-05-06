@@ -2,7 +2,7 @@
 @use 'styles/mixins' as m;
 
 // ─── Block ────────────────────────────────────────────────────────────────────
-.b-capital-dashboard {
+.bxzz-capital-dashboard {
   @include m.flex-column;
   @include m.custom-scrollbar;
   gap: v.$spacing-8;

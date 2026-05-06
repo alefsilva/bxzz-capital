@@ -20,8 +20,8 @@ export class PortfolioSummaryComponent {
 
   readonly pnlClass = computed(() =>
     this.summary().totalProfitLoss >= 0
-      ? 'b-capital-portfolio-summary__pnl--positive'
-      : 'b-capital-portfolio-summary__pnl--negative',
+      ? 'bxzz-capital-portfolio-summary__pnl--positive'
+      : 'bxzz-capital-portfolio-summary__pnl--negative',
   );
 
   readonly pnlSign = computed(() =>

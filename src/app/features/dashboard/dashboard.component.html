@@ -1,18 +1,18 @@
-<div class="b-capital-dashboard">
+<div class="bxzz-capital-dashboard">
 
-  <header class="b-capital-dashboard__header">
-    <div class="b-capital-dashboard__header-left">
-      <h1 class="b-capital-dashboard__title">B-Capital</h1>
-      <span class="b-capital-dashboard__subtitle">Gestão de Ativos Digitais</span>
+  <header class="bxzz-capital-dashboard__header">
+    <div class="bxzz-capital-dashboard__header-left">
+      <h1 class="bxzz-capital-dashboard__title">BXZZ-Capital</h1>
+      <span class="bxzz-capital-dashboard__subtitle">Gestão de Ativos Digitais</span>
     </div>
-    <div class="b-capital-dashboard__header-right">
+    <div class="bxzz-capital-dashboard__header-right">
       @if (lastUpdated()) {
-        <span class="b-capital-dashboard__last-updated">
+        <span class="bxzz-capital-dashboard__last-updated">
           Atualizado às {{ lastUpdated()! | date:'HH:mm:ss' }}
         </span>
       }
       <button
-        class="b-capital-dashboard__refresh-btn"
+        class="bxzz-capital-dashboard__refresh-btn"
         (click)="refresh()"
         [disabled]="loading()"
         aria-label="Atualizar preços"
@@ -23,8 +23,8 @@
   </header>
 
   @if (error()) {
-    <div class="b-capital-dashboard__error" role="alert">
-      <span class="b-capital-dashboard__error-icon">⚠</span>
+    <div class="bxzz-capital-dashboard__error" role="alert">
+      <span class="bxzz-capital-dashboard__error-icon">⚠</span>
       {{ error() }}
     </div>
   }
@@ -33,10 +33,10 @@
     <bc-portfolio-summary [summary]="summary" />
   }
 
-  <section class="b-capital-dashboard__watchlist">
-    <h2 class="b-capital-dashboard__section-title">Watchlist</h2>
+  <section class="bxzz-capital-dashboard__watchlist">
+    <h2 class="bxzz-capital-dashboard__section-title">Watchlist</h2>
 
-    <div class="b-capital-dashboard__grid">
+    <div class="bxzz-capital-dashboard__grid">
       @if (loading() && assets().length === 0) {
         @for (item of skeletonItems; track $index) {
           <bc-skeleton variant="card" />
@@ -45,7 +45,7 @@
         @for (asset of assets(); track asset.id) {
           <bc-asset-card [asset]="asset" />
         } @empty {
-          <p class="b-capital-dashboard__empty">
+          <p class="bxzz-capital-dashboard__empty">
             Nenhum ativo na watchlist.
           </p>
         }
