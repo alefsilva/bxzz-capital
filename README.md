@@ -156,6 +156,49 @@ npm run deploy
 
 ---
 
+## Resiliência e Estratégia de Cache
+
+A aplicação implementa uma estratégia **Cache-First com TTL** no LocalStorage para mitigar os limites da [API pública do CoinGecko](https://support.coingecko.com/hc/en-us/articles/4538771776153-What-is-the-rate-limit-for-CoinGecko-API-public-plan) (5–15 requisições por minuto no plano gratuito).
+
+### Como funciona
+
+```
+loadPrices action
+       │
+       ▼
+Cache válido? ──── SIM ──▶ loadPricesSuccess (sem HTTP)
+       │
+      NÃO
+       │
+       ▼
+  Chama API ──── Sucesso ──▶ Salva no LocalStorage ──▶ loadPricesSuccess
+       │
+    Erro 429
+       │
+       ▼
+Cache expirado? ── SIM ──▶ loadPricesSuccess (dados antigos, UI não fica vazia)
+       │
+      NÃO
+       ▼
+  loadPricesFailure
+```
+
+| Cenário | Comportamento |
+|---------|--------------|
+| Cache < 60s | Serve dados do LocalStorage, sem chamada HTTP |
+| Cache expirado | Chama a API e atualiza o cache com o novo timestamp |
+| Erro 429 + cache disponível | Serve o cache expirado para manter a UI populada |
+| Erro 429 + sem cache | Exibe mensagem de erro ao usuário |
+
+### Benefícios
+
+- **Rate Limit Protection:** evita 429 em refreshes manuais rápidos
+- **Redução de latência:** o F5 durante os primeiros 60s carrega instantaneamente do LocalStorage
+- **Resiliência:** a UI nunca fica vazia enquanto houver algum dado em cache
+- **TTL unificado:** o intervalo de auto-refresh (60s) e o TTL do cache compartilham a mesma constante `CACHE_TTL_MS` — impossível dessincronizar
+
+---
+
 ## API
 
 Este projeto consome a [CoinGecko API](https://www.coingecko.com/en/api) (plano gratuito — sem autenticação necessária para os endpoints utilizados).
