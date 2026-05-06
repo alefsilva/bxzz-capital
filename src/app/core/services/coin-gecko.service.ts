@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 
 import type { CoinMarket, CoinMarketsParams, ApiError } from '../interfaces/coin.interface';
+import { environment } from '../../../environments/environment';
 
 /**
  * Princípio SOLID — Dependency Inversion:
@@ -18,7 +19,7 @@ import type { CoinMarket, CoinMarketsParams, ApiError } from '../interfaces/coin
 export class CoinGeckoService {
   private readonly http = inject(HttpClient);
 
-  private readonly BASE_URL = 'https://api.coingecko.com/api/v3';
+  private readonly BASE_URL = environment.apiBase;
 
   /** IDs padrão da watchlist inicial — demonstra configuração declarativa */
   readonly DEFAULT_COIN_IDS = [

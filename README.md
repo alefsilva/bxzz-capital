@@ -156,6 +156,89 @@ npm run deploy
 
 ---
 
+## Configuração de Proxy e Ambientes
+
+A aplicação diferencia o tratamento de requisições HTTP conforme o ambiente de execução, resolvendo o bloqueio de CORS que a API pública da CoinGecko impõe a origens `localhost`.
+
+### Desenvolvimento — Proxy Angular (`npm start`)
+
+O `CoinGeckoService` usa a URL relativa `/api/coingecko` (definida em `environment.ts`). O dev server do Angular intercepta essas chamadas e as encaminha para o servidor da CoinGecko **via Node.js**, antes de chegarem ao browser — o que elimina o problema de CORS, pois a requisição parte de um processo Node e não de uma origem de browser.
+
+```json
+// proxy.conf.json
+{
+  "/api/coingecko": {
+    "target": "https://api.coingecko.com/api/v3",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/coingecko": "" }
+  }
+}
+```
+
+O proxy é ativado automaticamente pelo `angular.json`:
+
+```json
+"serve": {
+  "options": { "proxyConfig": "proxy.conf.json" }
+}
+```
+
+### Produção — Chamada Direta (`npm run build:prod`)
+
+Em produção, o Angular substitui `environment.ts` por `environment.prod.ts` via `fileReplacements` no `angular.json`. O `CoinGeckoService` passa a usar a URL absoluta `https://api.coingecko.com/api/v3`, que funciona diretamente do browser porque o domínio do GitHub Pages é aceito pela política CORS da API.
+
+| Arquivo | `apiBase` | Quando se aplica |
+|---------|-----------|-----------------|
+| `environment.ts` | `/api/coingecko` | `npm start` (dev proxy) |
+| `environment.prod.ts` | `https://api.coingecko.com/api/v3` | `npm run build:prod` |
+
+A troca é feita automaticamente pelo build — nenhuma alteração manual de código é necessária ao fazer deploy.
+
+---
+
+## Resiliência e Estratégia de Cache
+
+A aplicação implementa uma estratégia **Cache-First com TTL** no LocalStorage para mitigar os limites da [API pública do CoinGecko](https://support.coingecko.com/hc/en-us/articles/4538771776153-What-is-the-rate-limit-for-CoinGecko-API-public-plan) (5–15 requisições por minuto no plano gratuito).
+
+### Como funciona
+
+```
+loadPrices action
+       │
+       ▼
+Cache válido? ──── SIM ──▶ loadPricesSuccess (sem HTTP)
+       │
+      NÃO
+       │
+       ▼
+  Chama API ──── Sucesso ──▶ Salva no LocalStorage ──▶ loadPricesSuccess
+       │
+    Erro 429
+       │
+       ▼
+Cache expirado? ── SIM ──▶ loadPricesSuccess (dados antigos, UI não fica vazia)
+       │
+      NÃO
+       ▼
+  loadPricesFailure
+```
+
+| Cenário | Comportamento |
+|---------|--------------|
+| Cache < 60s | Serve dados do LocalStorage, sem chamada HTTP |
+| Cache expirado | Chama a API e atualiza o cache com o novo timestamp |
+| Erro 429 + cache disponível | Serve o cache expirado para manter a UI populada |
+| Erro 429 + sem cache | Exibe mensagem de erro ao usuário |
+
+### Benefícios
+
+- **Rate Limit Protection:** evita 429 em refreshes manuais rápidos
+- **Redução de latência:** o F5 durante os primeiros 60s carrega instantaneamente do LocalStorage
+- **Resiliência:** a UI nunca fica vazia enquanto houver algum dado em cache
+- **TTL unificado:** o intervalo de auto-refresh (60s) e o TTL do cache compartilham a mesma constante `CACHE_TTL_MS` — impossível dessincronizar
+
+---
+
 ## API
 
 Este projeto consome a [CoinGecko API](https://www.coingecko.com/en/api) (plano gratuito — sem autenticação necessária para os endpoints utilizados).
