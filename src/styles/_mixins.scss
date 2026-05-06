@@ -1,0 +1,104 @@
+@use 'variables' as v;
+
+// ─── Responsive Breakpoints ───────────────────────────────────────────────────
+$breakpoints: (
+  'sm':  576px,
+  'md':  768px,
+  'lg':  992px,
+  'xl':  1200px,
+  '2xl': 1400px,
+);
+
+@mixin respond-to($breakpoint) {
+  $value: map-get($breakpoints, $breakpoint);
+  @if $value {
+    @media (min-width: $value) { @content; }
+  } @else {
+    @warn 'Breakpoint `#{$breakpoint}` not found.';
+  }
+}
+
+// ─── Flex Utilities ───────────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── Skeleton Shimmer Animation ───────────────────────────────────────────────
+@mixin skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    v.$color-surface-elevated 25%,
+    lighten(v.$color-surface-elevated, 4%) 50%,
+    v.$color-surface-elevated 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-wave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ─── Text Truncation ──────────────────────────────────────────────────────────
+@mixin text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// ─── Card Surface ─────────────────────────────────────────────────────────────
+@mixin card-surface {
+  background-color: v.$color-surface-elevated;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-md;
+  box-shadow: v.$shadow-sm;
+}
+
+// ─── Focus Ring (Accessibility) ───────────────────────────────────────────────
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid v.$color-accent;
+    outline-offset: 2px;
+  }
+}
+
+// ─── Scrollbar Custom ─────────────────────────────────────────────────────────
+@mixin custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: v.$color-border v.$color-surface;
+
+  &::-webkit-scrollbar        { width: 6px; }
+  &::-webkit-scrollbar-track  { background: v.$color-surface; }
+  &::-webkit-scrollbar-thumb  {
+    background-color: v.$color-border;
+    border-radius: v.$radius-full;
+  }
+}
+
+// ─── Typography Helpers ───────────────────────────────────────────────────────
+@mixin label-uppercase {
+  font-size: v.$font-size-xs;
+  font-weight: v.$font-weight-semibold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: v.$color-text-secondary;
+}
+
+@mixin mono-number {
+  font-family: v.$font-family-mono;
+  font-variant-numeric: tabular-nums;
+}
