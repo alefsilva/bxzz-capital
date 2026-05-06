@@ -1,0 +1,85 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+// ─── Block ────────────────────────────────────────────────────────────────────
+.b-capital-portfolio-summary {
+  @include m.card-surface;
+  @include m.flex-column;
+  gap: v.$spacing-5;
+  padding: v.$spacing-6;
+  background: linear-gradient(
+    135deg,
+    v.$color-surface-elevated 0%,
+    rgba(26, 115, 232, 0.06) 100%
+  );
+
+  // ─── Elements ───────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: v.$font-size-lg;
+    font-weight: v.$font-weight-semibold;
+    color: v.$color-text-primary;
+  }
+
+  &__count {
+    font-size: v.$font-size-sm;
+    color: v.$color-text-muted;
+    background-color: v.$color-surface;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-full;
+    padding: v.$spacing-1 v.$spacing-3;
+  }
+
+  &__total {
+    @include m.flex-column;
+    gap: v.$spacing-1;
+    border-bottom: 1px solid v.$color-border-subtle;
+    padding-bottom: v.$spacing-4;
+  }
+
+  &__label {
+    @include m.label-uppercase;
+  }
+
+  &__value {
+    @include m.mono-number;
+    font-size: v.$font-size-3xl;
+    font-weight: v.$font-weight-bold;
+    color: v.$color-text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: v.$spacing-4;
+  }
+
+  &__metric {
+    @include m.flex-column;
+    gap: v.$spacing-1;
+  }
+
+  &__metric-value {
+    @include m.mono-number;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-medium;
+    color: v.$color-text-primary;
+  }
+
+  // ── Element: pnl — base estrutural; modificadores definem cor do resultado ──
+  &__pnl {
+    @include m.mono-number;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-semibold;
+
+    &--positive { color: v.$color-up; }
+    &--negative { color: v.$color-down; }
+  }
+}

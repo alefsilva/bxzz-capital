@@ -1,0 +1,35 @@
+<div class="b-capital-skeleton" [ngClass]="'b-capital-skeleton--' + variant()">
+
+  @if (variant() === 'card') {
+    <div class="b-capital-skeleton__header">
+      <div class="b-capital-skeleton__circle"></div>
+      <div class="b-capital-skeleton__lines">
+        <div class="b-capital-skeleton__line b-capital-skeleton__line--wide"></div>
+        <div class="b-capital-skeleton__line b-capital-skeleton__line--narrow"></div>
+      </div>
+    </div>
+
+    <div class="b-capital-skeleton__body">
+      <div class="b-capital-skeleton__line b-capital-skeleton__line--full"></div>
+      <div class="b-capital-skeleton__line b-capital-skeleton__line--wide"></div>
+    </div>
+
+    <div class="b-capital-skeleton__footer">
+      <div class="b-capital-skeleton__badge"></div>
+      <div class="b-capital-skeleton__badge"></div>
+    </div>
+  }
+
+  @if (variant() === 'line') {
+    <div class="b-capital-skeleton__line b-capital-skeleton__line--{{ width() }}"></div>
+  }
+
+  @if (variant() === 'circle') {
+    <div class="b-capital-skeleton__circle"></div>
+  }
+
+  @if (variant() === 'badge') {
+    <div class="b-capital-skeleton__badge"></div>
+  }
+
+</div>

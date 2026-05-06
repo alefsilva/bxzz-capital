@@ -1,0 +1,152 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+// ─── Block ────────────────────────────────────────────────────────────────────
+.b-capital-asset-card {
+  @include m.card-surface;
+  @include m.flex-column;
+  gap: v.$spacing-4;
+  padding: v.$spacing-5;
+  transition: transform v.$transition-base, box-shadow v.$transition-base;
+  cursor: default;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-md;
+    border-color: v.$color-accent;
+  }
+
+  // ─── Elements ───────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-3;
+  }
+
+  &__logo {
+    width: 36px;
+    height: 36px;
+    border-radius: v.$radius-full;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  &__identity {
+    @include m.flex-column;
+    flex: 1;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  &__name {
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-semibold;
+    color: v.$color-text-primary;
+    @include m.text-ellipsis;
+  }
+
+  &__symbol {
+    font-size: v.$font-size-xs;
+    font-weight: v.$font-weight-medium;
+    color: v.$color-text-secondary;
+    letter-spacing: 0.05em;
+  }
+
+  &__rank {
+    font-size: v.$font-size-xs;
+    color: v.$color-text-muted;
+    background-color: v.$color-surface;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-sm;
+    padding: v.$spacing-1 v.$spacing-2;
+    flex-shrink: 0;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: v.$spacing-2;
+  }
+
+  &__price {
+    @include m.mono-number;
+    font-size: v.$font-size-xl;
+    font-weight: v.$font-weight-bold;
+    color: v.$color-text-primary;
+  }
+
+  // ── Element: change — base neutro; modificadores definem cor do mercado ──
+  &__change {
+    @include m.mono-number;
+    font-size: v.$font-size-sm;
+    font-weight: v.$font-weight-semibold;
+    padding: v.$spacing-1 v.$spacing-2;
+    border-radius: v.$radius-full;
+
+    &--up {
+      color: v.$color-up;
+      background-color: v.$color-up-subtle;
+    }
+
+    &--down {
+      color: v.$color-down;
+      background-color: v.$color-down-subtle;
+    }
+  }
+
+  &__stats {
+    @include m.flex-column;
+    gap: v.$spacing-2;
+    border-top: 1px solid v.$color-border-subtle;
+    padding-top: v.$spacing-3;
+  }
+
+  &__stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: v.$spacing-2;
+  }
+
+  &__stat-label {
+    @include m.label-uppercase;
+  }
+
+  &__stat-value {
+    @include m.mono-number;
+    font-size: v.$font-size-sm;
+    color: v.$color-text-primary;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid v.$color-border-subtle;
+    padding-top: v.$spacing-3;
+    gap: v.$spacing-4;
+  }
+
+  &__holding {
+    @include m.flex-column;
+    gap: v.$spacing-1;
+  }
+
+  // ── Element: pnl — base estrutural; modificadores definem cor do resultado ──
+  &__pnl {
+    @include m.flex-column;
+    align-items: flex-end;
+    gap: v.$spacing-1;
+
+    &--positive { color: v.$color-up; }
+    &--negative { color: v.$color-down; }
+  }
+
+  &__pnl-value {
+    @include m.mono-number;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-semibold;
+  }
+}

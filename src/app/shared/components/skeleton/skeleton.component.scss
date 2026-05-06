@@ -1,0 +1,82 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+// ─── Block ────────────────────────────────────────────────────────────────────
+// O bloco define a estrutura-base: largura total e flex-column.
+// Os modificadores apenas ajustam o que se diferencia do padrão.
+.b-capital-skeleton {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: v.$spacing-4;
+
+  // ── Modifier: card — adiciona superfície visual e padding ──
+  &--card {
+    @include m.card-surface;
+    padding: v.$spacing-6;
+  }
+
+  // ── Modifiers: line, circle, badge — wrapper alinhado sem estilos visuais extras ──
+  &--line,
+  &--circle,
+  &--badge {
+    align-items: flex-start;
+  }
+
+  // ─── Elements ───────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-3;
+  }
+
+  &__lines {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-2;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-3;
+  }
+
+  &__footer {
+    display: flex;
+    gap: v.$spacing-3;
+    margin-top: v.$spacing-2;
+  }
+
+  // ── Element: line — base define shimmer + altura; modificadores só ajustam largura ──
+  &__line {
+    @include m.skeleton-shimmer;
+    height: 14px;
+    width: 75%; // largura padrão
+    border-radius: v.$radius-sm;
+
+    // Modificadores independentes: não dependem de nenhum modificador do bloco
+    &--full   { width: 100%; }
+    &--narrow { width: 45%; }
+    &--wide   { width: 75%; }
+  }
+
+  // ── Element: circle — logo/avatar placeholder ──
+  &__circle {
+    @include m.skeleton-shimmer;
+    flex-shrink: 0;
+    width:  40px;
+    height: 40px;
+    border-radius: v.$radius-full;
+  }
+
+  // ── Element: badge — tag/pill placeholder ──
+  &__badge {
+    @include m.skeleton-shimmer;
+    height: 28px;
+    width:  80px;
+    border-radius: v.$radius-full;
+  }
+}

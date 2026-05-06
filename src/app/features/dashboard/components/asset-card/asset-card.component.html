@@ -1,0 +1,60 @@
+<article class="b-capital-asset-card">
+
+  <header class="b-capital-asset-card__header">
+    <img
+      class="b-capital-asset-card__logo"
+      [src]="asset().image"
+      [alt]="asset().name"
+      width="36"
+      height="36"
+      loading="lazy"
+    />
+    <div class="b-capital-asset-card__identity">
+      <span class="b-capital-asset-card__name">{{ asset().name }}</span>
+      <span class="b-capital-asset-card__symbol">{{ asset().symbol | uppercase }}</span>
+    </div>
+    <span class="b-capital-asset-card__rank">#{{ asset().market_cap_rank }}</span>
+  </header>
+
+  <div class="b-capital-asset-card__price-row">
+    <span class="b-capital-asset-card__price">
+      {{ asset().current_price | currency:'USD':'symbol':'1.2-6' }}
+    </span>
+    <span class="b-capital-asset-card__change" [ngClass]="priceChangeClass()">
+      {{ priceChangeSign() }}{{ asset().price_change_percentage_24h | number:'1.2-2' }}%
+    </span>
+  </div>
+
+  <div class="b-capital-asset-card__stats">
+    <div class="b-capital-asset-card__stat">
+      <span class="b-capital-asset-card__stat-label">Volume 24h</span>
+      <span class="b-capital-asset-card__stat-value">
+        {{ asset().total_volume | currency:'USD':'symbol':'1.0-0' }}
+      </span>
+    </div>
+    <div class="b-capital-asset-card__stat">
+      <span class="b-capital-asset-card__stat-label">Mín / Máx 24h</span>
+      <span class="b-capital-asset-card__stat-value">
+        {{ asset().low_24h | currency:'USD':'symbol':'1.2-2' }}
+        /
+        {{ asset().high_24h | currency:'USD':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+
+  <footer class="b-capital-asset-card__footer">
+    <div class="b-capital-asset-card__holding">
+      <span class="b-capital-asset-card__stat-label">Posição</span>
+      <span class="b-capital-asset-card__stat-value">
+        {{ asset().quantity | number:'1.4-8' }} {{ asset().symbol | uppercase }}
+      </span>
+    </div>
+    <div class="b-capital-asset-card__pnl" [ngClass]="profitLossClass()">
+      <span class="b-capital-asset-card__stat-label">P&L</span>
+      <span class="b-capital-asset-card__pnl-value">
+        {{ profitLoss() | currency:'USD':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </footer>
+
+</article>
