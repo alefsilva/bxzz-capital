@@ -30,6 +30,12 @@
     gap: v.$spacing-1;
   }
 
+  &__header-brand {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-3;
+  }
+
   &__header-right {
     display: flex;
     align-items: center;
