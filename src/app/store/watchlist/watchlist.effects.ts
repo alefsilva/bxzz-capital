@@ -1,7 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { interval, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { interval, Observable, of, Subject } from 'rxjs';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { CoinGeckoService } from '../../core/services/coin-gecko.service';
 import type { CoinMarket } from '../../core/interfaces/coin.interface';
@@ -12,11 +13,22 @@ import type { Action } from '@ngrx/store';
 export class WatchlistEffects {
   private readonly actions$     = inject(Actions);
   private readonly coinGeckoSvc = inject(CoinGeckoService);
+  private readonly platformId   = inject(PLATFORM_ID);
 
   private readonly CACHE_KEY    = 'bxzz_coins_cache';
   private readonly CACHE_TS_KEY = 'bxzz_coins_cache_ts';
   /** TTL do cache e intervalo de auto-refresh compartilham o mesmo valor */
   private readonly CACHE_TTL_MS = 60_000;
+
+  /**
+   * Subject disparado por afterNextRender — nunca emite em Node.js (no-op),
+   * garantindo que interval() não seja criado durante o SSG e não impeça whenStable().
+   */
+  private readonly renderReady$ = new Subject<void>();
+
+  constructor() {
+    afterNextRender(() => this.renderReady$.next());
+  }
 
   /**
    * Cache-first: serve dados do LocalStorage se o cache for < CACHE_TTL_MS.
@@ -42,11 +54,13 @@ export class WatchlistEffects {
 
   /**
    * Auto-refresh a cada CACHE_TTL_MS.
-   * startWith(0) foi removido intencionalmente: ngOnInit já faz a carga inicial,
-   * evitando o double dispatch que exibia o log de cache antes de qualquer dado existir.
+   * Aguarda o primeiro render do browser via renderReady$ — em Node.js
+   * afterNextRender é no-op, então o interval nunca é criado durante SSG.
    */
   autoRefresh$ = createEffect(() =>
-    interval(this.CACHE_TTL_MS).pipe(
+    this.renderReady$.pipe(
+      take(1),
+      switchMap(() => interval(this.CACHE_TTL_MS)),
       map(() => loadPrices()),
     ),
   );
@@ -70,6 +84,7 @@ export class WatchlistEffects {
 
   /** Retorna o cache somente se ainda estiver dentro do TTL */
   private readCache(): CoinMarket[] | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
     const ts = Number(localStorage.getItem(this.CACHE_TS_KEY) ?? 0);
     if (Date.now() - ts >= this.CACHE_TTL_MS) return null;
     return this.parseCache();
@@ -77,10 +92,12 @@ export class WatchlistEffects {
 
   /** Retorna o cache independente do TTL — usado como fallback em erros 429 */
   private readStaleCache(): CoinMarket[] | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
     return this.parseCache();
   }
 
   private parseCache(): CoinMarket[] | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
     try {
       const raw = localStorage.getItem(this.CACHE_KEY);
       return raw ? (JSON.parse(raw) as CoinMarket[]) : null;
@@ -90,6 +107,7 @@ export class WatchlistEffects {
   }
 
   private writeCache(coins: CoinMarket[]): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     localStorage.setItem(this.CACHE_KEY, JSON.stringify(coins));
     localStorage.setItem(this.CACHE_TS_KEY, Date.now().toString());
   }
