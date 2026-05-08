@@ -14,18 +14,21 @@
           Atualizado às {{ lastUpdated()! | date:'HH:mm:ss' }}
         </span>
       }
-      <button
-        class="bxzz-capital-dashboard__refresh-btn"
-        (click)="refresh()"
-        [disabled]="loading()"
-        aria-label="Atualizar preços"
-      >
-        @if (loading()) { Atualizando... } @else { Atualizar }
-      </button>
+      <bc-refresh-countdown />
     </div>
   </header>
 
-  @if (error()) {
+  @if (isCooldown()) {
+    <div class="bxzz-capital-dashboard__cooldown" role="status">
+      <span class="bxzz-capital-dashboard__cooldown-icon">⚠</span>
+      <span>
+        Limite de taxa da API atingido. Mantendo dados atuais para sua segurança.
+        Próxima tentativa automática em <strong>{{ cooldownDisplay() }}</strong>...
+      </span>
+    </div>
+  }
+
+  @if (error() && !isCooldown()) {
     <div class="bxzz-capital-dashboard__error" role="alert">
       <span class="bxzz-capital-dashboard__error-icon">⚠</span>
       {{ error() }}

@@ -1,0 +1,57 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+// ─── Block ────────────────────────────────────────────────────────────────────
+.bxzz-capital-refresh-countdown {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-2;
+
+  // ─── Elements ───────────────────────────────────────────────────────────────
+
+  &__ring {
+    flex-shrink: 0;
+    overflow: visible;
+  }
+
+  &__track {
+    fill: none;
+    stroke: v.$color-border;
+    stroke-width: 2;
+  }
+
+  &__progress {
+    fill: none;
+    stroke: v.$color-text-muted;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 50.27;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.9s linear, stroke v.$transition-base;
+  }
+
+  &__text {
+    @include m.mono-number;
+    font-size: v.$font-size-xs;
+    color: v.$color-text-muted;
+    white-space: nowrap;
+    transition: color v.$transition-base;
+  }
+
+  // ─── Modifiers ──────────────────────────────────────────────────────────────
+
+  &--urgent {
+    .bxzz-capital-refresh-countdown__progress { stroke: v.$color-accent; }
+    .bxzz-capital-refresh-countdown__text     { color:  v.$color-accent; }
+  }
+
+  &--syncing {
+    .bxzz-capital-refresh-countdown__progress { animation: rc-pulse 1s ease-in-out infinite; }
+    .bxzz-capital-refresh-countdown__text     { animation: rc-pulse 1s ease-in-out infinite; }
+  }
+}
+
+@keyframes rc-pulse {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.4; }
+}

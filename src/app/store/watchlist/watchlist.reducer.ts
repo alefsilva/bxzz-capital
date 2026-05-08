@@ -7,9 +7,11 @@ import {
   loadPrices,
   loadPricesSuccess,
   loadPricesFailure,
+  enterCooldown,
+  clearCooldown,
 } from './watchlist.actions';
 import { initialWatchlistState } from './watchlist.state';
-import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
+import type { WatchlistAsset } from 'app/core/interfaces/coin.interface';
 
 export const watchlistReducer = createReducer(
   initialWatchlistState,
@@ -28,12 +30,13 @@ export const watchlistReducer = createReducer(
 
   on(clearWatchlist, (state) => ({ ...state, assets: [] })),
 
-  on(loadPrices, (state) => ({ ...state, loading: true, error: null })),
+  // Limpa cooldownUntil ao iniciar nova tentativa — oculta o banner de cooldown
+  on(loadPrices, (state) => ({ ...state, loading: true, error: null, cooldownUntil: null })),
 
-  on(loadPricesSuccess, (state, { coins }) => ({
+  on(loadPricesSuccess, (state, { coins, lastUpdated }) => ({
     ...state,
-    loading:     false,
-    lastUpdated: Date.now(),
+    loading:  false,
+    lastUpdated,
     // Merge imutável: atualiza preços dos ativos já existentes na watchlist
     assets: state.assets.map((asset) => {
       const updated = coins.find((c) => c.id === asset.id);
@@ -47,5 +50,16 @@ export const watchlistReducer = createReducer(
     ...state,
     loading: false,
     error,
+  })),
+
+  on(enterCooldown, (state, { cooldownUntil }) => ({
+    ...state,
+    loading: false,
+    cooldownUntil,
+  })),
+
+  on(clearCooldown, (state) => ({
+    ...state,
+    cooldownUntil: null,
   })),
 );
