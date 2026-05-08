@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 import { fromEvent, interval, merge, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
-import { CACHE_TTL_MS } from 'app/core/constants/refresh.constants';
-import { selectLastUpdated, selectLoading } from 'app/store/watchlist/watchlist.selectors';
+import { CACHE_TTL_MS } from '@src/app/core/constants/refresh.constants';
+import { selectLastUpdated, selectLoading } from '@src/app/store/watchlist/watchlist.selectors';
 
 @Component({
   selector: 'bc-refresh-countdown',

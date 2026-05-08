@@ -1,7 +1,7 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CurrencyPipe, DecimalPipe, NgClass, UpperCasePipe } from '@angular/common';
 
-import type { WatchlistAsset } from '../../../../core/interfaces/coin.interface';
+import type { WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 /**
  * Princípio SRP: renderiza apenas os dados de um único ativo.
@@ -23,8 +23,8 @@ export class AssetCardComponent {
   // Signal derivado: calculado localmente apenas para dados de exibição
   readonly priceChangeClass = computed(() =>
     this.asset().price_change_percentage_24h >= 0
-      ? 'bxzz-capital-asset-card__change--up'
-      : 'bxzz-capital-asset-card__change--down',
+      ? 'bc-asset-card__change--up'
+      : 'bc-asset-card__change--down',
   );
 
   readonly priceChangeSign = computed(() =>
@@ -43,7 +43,7 @@ export class AssetCardComponent {
 
   readonly profitLossClass = computed(() =>
     this.profitLoss() >= 0
-      ? 'bxzz-capital-asset-card__pnl--positive'
-      : 'bxzz-capital-asset-card__pnl--negative',
+      ? 'bc-asset-card__pnl--positive'
+      : 'bc-asset-card__pnl--negative',
   );
 }

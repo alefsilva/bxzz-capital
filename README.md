@@ -2,6 +2,8 @@
 
 Projeto arquitetado para alta performance e escalabilidade, simulando um ambiente de gestão de ativos financeiros.
 
+🔗 **URL de Produção:** https://alefsilva.github.io/bxzz-capital/
+
 ## Destaques da Implementação
 
 - **State Management:** Fluxo unidirecional com NgRx para garantir previsibilidade em dados de mercado voláteis.
@@ -199,7 +201,7 @@ A API se recupera sozinha — nenhuma intervenção manual é necessária.
 
 ```html
 @if (isCooldown()) {
-  <div class="bxzz-capital-dashboard__cooldown" role="status">
+  <div class="bc-dashboard__cooldown" role="status">
     ⚠ Limite de taxa da API atingido. Mantendo dados atuais para sua segurança.
     Próxima tentativa automática em {{ cooldownDisplay() }}...
   </div>
@@ -286,17 +288,18 @@ O BEM (Block, Element, Modifier) resolve isso através de **nomes longos e únic
 .card .price { ... }
 .card .price.up { ... }
 
-// ✅ BEM — sem risco de colisão, sem CSS Modules necessário
-.bxzz-capital-asset-card { ... }
-.bxzz-capital-asset-card__price { ... }
-.bxzz-capital-asset-card__price--up { ... }
+// ✅ BEM com namespace atômico — seletor Angular == bloco BEM raiz
+// selector: 'bc-skeleton'  →  classe raiz: .bc-skeleton
+.bc-skeleton { ... }
+.bc-skeleton__header { ... }
+.bc-skeleton__line--wide { ... }
 ```
 
-O prefixo `bxzz-capital-` funciona como um **namespace de produto**. Mesmo sem Shadow DOM ou CSS Modules, dois componentes de equipes diferentes jamais colidirão enquanto usarem prefixos distintos.
+O seletor Angular é idêntico ao bloco BEM raiz (`selector == Block`). O prefixo `bc-` funciona como **namespace do produto** — mesmo sem Shadow DOM ou CSS Modules, dois componentes de equipes diferentes jamais colidirão enquanto usarem prefixos distintos.
 
 ### Por que isso importa em bancos
 
-Sistemas financeiros geralmente possuem múltiplos micro-frontends, times distribuídos e um Design System corporativo central. O BEM permite que o DS defina estilos base (`.ds-button`, `.ds-card`) e cada produto os estenda sem risco (`bxzz-capital-button--primary`), mantendo o CSS previsível e auditável.
+Sistemas financeiros geralmente possuem múltiplos micro-frontends, times distribuídos e um Design System corporativo central. O BEM permite que o DS defina estilos base (`.ds-button`, `.ds-card`) e cada produto os estenda sem risco (`bc-button--primary`), mantendo o CSS previsível e auditável.
 
 ---
 

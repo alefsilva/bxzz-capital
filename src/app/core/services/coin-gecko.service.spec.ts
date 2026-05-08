@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideHttpClient } from '@angular/common/http';
 
 import { CoinGeckoService } from './coin-gecko.service';
-import type { CoinMarket } from '../interfaces/coin.interface';
+import type { CoinMarket } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Fábrica de dados de teste ────────────────────────────────────────────────
 

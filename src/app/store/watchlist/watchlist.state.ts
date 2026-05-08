@@ -1,4 +1,4 @@
-import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
+import type { WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 export interface WatchlistState {
   assets:        WatchlistAsset[];

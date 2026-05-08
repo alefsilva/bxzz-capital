@@ -6,9 +6,9 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
-import { routes } from './app.routes';
-import { watchlistReducer } from './store/watchlist/watchlist.reducer';
-import { WatchlistEffects } from './store/watchlist/watchlist.effects';
+import { routes } from '@src/app/app.routes';
+import { watchlistReducer } from '@src/app/store/watchlist/watchlist.reducer';
+import { WatchlistEffects } from '@src/app/store/watchlist/watchlist.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [

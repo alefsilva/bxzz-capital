@@ -6,7 +6,10 @@
     "outDir": "./out-tsc/app",
     "rootDir": "./src",
     "moduleResolution": "bundler",
-    "types": []
+    "types": [],
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]

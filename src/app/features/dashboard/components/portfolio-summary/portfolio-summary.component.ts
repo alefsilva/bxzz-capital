@@ -1,7 +1,7 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
 
-import type { PortfolioSummary } from '../../../../core/interfaces/coin.interface';
+import type { PortfolioSummary } from '@src/app/core/interfaces/coin.interface';
 
 /**
  * Princípio SRP: renderiza apenas o resumo consolidado do portfólio.
@@ -20,8 +20,8 @@ export class PortfolioSummaryComponent {
 
   readonly pnlClass = computed(() =>
     this.summary().totalProfitLoss >= 0
-      ? 'bxzz-capital-portfolio-summary__pnl--positive'
-      : 'bxzz-capital-portfolio-summary__pnl--negative',
+      ? 'bc-portfolio-summary__pnl--positive'
+      : 'bc-portfolio-summary__pnl--negative',
   );
 
   readonly pnlSign = computed(() =>

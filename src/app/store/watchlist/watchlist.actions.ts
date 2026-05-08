@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import type { CoinMarket, WatchlistAsset } from 'app/core/interfaces/coin.interface';
+import type { CoinMarket, WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Watchlist CRUD ───────────────────────────────────────────────────────────
 

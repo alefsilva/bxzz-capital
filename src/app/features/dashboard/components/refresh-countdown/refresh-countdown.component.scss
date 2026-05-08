@@ -2,7 +2,7 @@
 @use 'styles/mixins' as m;
 
 // ─── Block ────────────────────────────────────────────────────────────────────
-.bxzz-capital-refresh-countdown {
+.bc-refresh-countdown {
   display: flex;
   align-items: center;
   gap: v.$spacing-2;
@@ -41,13 +41,13 @@
   // ─── Modifiers ──────────────────────────────────────────────────────────────
 
   &--urgent {
-    .bxzz-capital-refresh-countdown__progress { stroke: v.$color-accent; }
-    .bxzz-capital-refresh-countdown__text     { color:  v.$color-accent; }
+    .bc-refresh-countdown__progress { stroke: v.$color-accent; }
+    .bc-refresh-countdown__text     { color:  v.$color-accent; }
   }
 
   &--syncing {
-    .bxzz-capital-refresh-countdown__progress { animation: rc-pulse 1s ease-in-out infinite; }
-    .bxzz-capital-refresh-countdown__text     { animation: rc-pulse 1s ease-in-out infinite; }
+    .bc-refresh-countdown__progress { animation: rc-pulse 1s ease-in-out infinite; }
+    .bc-refresh-countdown__text     { animation: rc-pulse 1s ease-in-out infinite; }
   }
 }
 

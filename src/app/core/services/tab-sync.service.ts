@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, interval, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, takeWhile } from 'rxjs/operators';
 
-import type { CoinMarket } from 'app/core/interfaces/coin.interface';
+import type { CoinMarket } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Message Types ────────────────────────────────────────────────────────────
 

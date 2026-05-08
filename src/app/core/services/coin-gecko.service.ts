@@ -3,8 +3,8 @@ import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 
-import type { CoinMarket, CoinMarketsParams, ApiError } from '../interfaces/coin.interface';
-import { environment } from '../../../environments/environment';
+import type { CoinMarket, CoinMarketsParams, ApiError } from '@src/app/core/interfaces/coin.interface';
+import { environment } from '@src/environments/environment';
 
 /**
  * Princípio SOLID — Dependency Inversion:

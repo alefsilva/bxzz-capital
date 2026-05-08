@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import type { WatchlistState } from './watchlist.state';
-import type { AssetProfitability, PortfolioSummary } from '../../core/interfaces/coin.interface';
+import type { AssetProfitability, PortfolioSummary } from '@src/app/core/interfaces/coin.interface';
 
 // Selector raiz que localiza o slice 'watchlist' no AppState
 export const selectWatchlistState = createFeatureSelector<WatchlistState>('watchlist');
