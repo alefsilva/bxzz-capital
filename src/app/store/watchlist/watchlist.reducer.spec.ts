@@ -7,8 +7,10 @@ import {
   loadPrices,
   loadPricesSuccess,
   loadPricesFailure,
+  enterCooldown,
+  clearCooldown,
 } from './watchlist.actions';
-import type { WatchlistAsset, CoinMarket } from '../../core/interfaces/coin.interface';
+import type { WatchlistAsset, CoinMarket } from 'app/core/interfaces/coin.interface';
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 
@@ -79,7 +81,7 @@ function makeCoinMarket(overrides: Partial<CoinMarket> = {}): CoinMarket {
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
-describe('watchlistReducer', () => {
+describe('watchlistReducer — BXZZ Capital', () => {
 
   it('should return the initial state for an unknown action', () => {
     const state = watchlistReducer(undefined, { type: '@@INIT' });
@@ -155,6 +157,13 @@ describe('watchlistReducer', () => {
       expect(state.loading).toBe(true);
       expect(state.error).toBeNull();
     });
+
+    it('should clear cooldownUntil when a new load attempt begins', () => {
+      const stateWithCooldown = { ...initialWatchlistState, cooldownUntil: Date.now() + 300_000 };
+      const state             = watchlistReducer(stateWithCooldown, loadPrices());
+
+      expect(state.cooldownUntil).toBeNull();
+    });
   });
 
   // ── loadPricesSuccess ──
@@ -166,7 +175,7 @@ describe('watchlistReducer', () => {
 
       const withAsset    = watchlistReducer(initialWatchlistState, addToWatchlist({ asset }));
       const withLoading  = watchlistReducer(withAsset, loadPrices());
-      const afterSuccess = watchlistReducer(withLoading, loadPricesSuccess({ coins: [updatedCoin] }));
+      const afterSuccess = watchlistReducer(withLoading, loadPricesSuccess({ coins: [updatedCoin], lastUpdated: Date.now() }));
 
       expect(afterSuccess.loading).toBe(false);
       expect(afterSuccess.assets[0].current_price).toBe(60000);
@@ -178,7 +187,7 @@ describe('watchlistReducer', () => {
       const updatedCoin  = makeCoinMarket({ current_price: 60000 });
 
       const withAsset    = watchlistReducer(initialWatchlistState, addToWatchlist({ asset }));
-      const afterSuccess = watchlistReducer(withAsset, loadPricesSuccess({ coins: [updatedCoin] }));
+      const afterSuccess = watchlistReducer(withAsset, loadPricesSuccess({ coins: [updatedCoin], lastUpdated: Date.now() }));
 
       expect(afterSuccess.assets[0].purchasePrice).toBe(42000);
       expect(afterSuccess.assets[0].quantity).toBe(0.5);
@@ -194,6 +203,42 @@ describe('watchlistReducer', () => {
 
       expect(afterFail.loading).toBe(false);
       expect(afterFail.error).toBe('Network error');
+    });
+  });
+
+  // ── enterCooldown ──
+
+  describe('enterCooldown', () => {
+    it('should set cooldownUntil and set loading to false', () => {
+      const cooldownUntil = Date.now() + 300_000;
+      const withLoading   = watchlistReducer(initialWatchlistState, loadPrices());
+      const state         = watchlistReducer(withLoading, enterCooldown({ cooldownUntil }));
+
+      expect(state.cooldownUntil).toBe(cooldownUntil);
+      expect(state.loading).toBe(false);
+    });
+
+    it('should overwrite a previous cooldownUntil with the new value', () => {
+      const first  = Date.now() + 100_000;
+      const second = Date.now() + 300_000;
+      const after1 = watchlistReducer(initialWatchlistState, enterCooldown({ cooldownUntil: first }));
+      const after2 = watchlistReducer(after1, enterCooldown({ cooldownUntil: second }));
+
+      expect(after2.cooldownUntil).toBe(second);
+    });
+  });
+
+  // ── clearCooldown ──
+
+  describe('clearCooldown', () => {
+    it('should set cooldownUntil to null', () => {
+      const withCooldown = watchlistReducer(
+        initialWatchlistState,
+        enterCooldown({ cooldownUntil: Date.now() + 300_000 }),
+      );
+      const cleared = watchlistReducer(withCooldown, clearCooldown());
+
+      expect(cleared.cooldownUntil).toBeNull();
     });
   });
 });

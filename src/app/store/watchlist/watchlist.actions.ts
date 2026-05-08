@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import type { CoinMarket, WatchlistAsset } from '../../core/interfaces/coin.interface';
+import type { CoinMarket, WatchlistAsset } from 'app/core/interfaces/coin.interface';
 
 // ─── Watchlist CRUD ───────────────────────────────────────────────────────────
 
@@ -22,10 +22,19 @@ export const loadPrices = createAction('[Watchlist] Load Prices');
 
 export const loadPricesSuccess = createAction(
   '[Watchlist] Load Prices Success',
-  props<{ coins: CoinMarket[] }>(),
+  props<{ coins: CoinMarket[]; lastUpdated: number }>(),
 );
 
 export const loadPricesFailure = createAction(
   '[Watchlist] Load Prices Failure',
   props<{ error: string }>(),
 );
+
+// ─── Rate Limit Cooldown ──────────────────────────────────────────────────────
+
+export const enterCooldown = createAction(
+  '[Watchlist] Enter Cooldown',
+  props<{ cooldownUntil: number }>(),
+);
+
+export const clearCooldown = createAction('[Watchlist] Clear Cooldown');

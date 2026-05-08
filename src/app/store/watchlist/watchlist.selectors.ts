@@ -8,11 +8,17 @@ export const selectWatchlistState = createFeatureSelector<WatchlistState>('watch
 
 // ─── Seletores primitivos ─────────────────────────────────────────────────────
 
-export const selectAllAssets   = createSelector(selectWatchlistState, (s) => s.assets);
-export const selectLoading     = createSelector(selectWatchlistState, (s) => s.loading);
-export const selectError       = createSelector(selectWatchlistState, (s) => s.error);
-export const selectLastUpdated = createSelector(selectWatchlistState, (s) => s.lastUpdated);
-export const selectAssetCount  = createSelector(selectAllAssets, (assets) => assets.length);
+export const selectAllAssets    = createSelector(selectWatchlistState, (s) => s.assets);
+export const selectLoading      = createSelector(selectWatchlistState, (s) => s.loading);
+export const selectError        = createSelector(selectWatchlistState, (s) => s.error);
+export const selectLastUpdated  = createSelector(selectWatchlistState, (s) => s.lastUpdated);
+export const selectAssetCount   = createSelector(selectAllAssets, (assets) => assets.length);
+export const selectCooldownUntil = createSelector(selectWatchlistState, (s) => s.cooldownUntil);
+
+export const selectIsCooldown = createSelector(
+  selectCooldownUntil,
+  (cooldownUntil) => !!cooldownUntil && cooldownUntil > Date.now(),
+);
 
 export const selectIsInWatchlist = (coinId: string) =>
   createSelector(selectAllAssets, (assets) => assets.some((a) => a.id === coinId));

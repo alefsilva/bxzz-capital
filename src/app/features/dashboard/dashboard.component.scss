@@ -62,24 +62,21 @@
     color: v.$color-text-muted;
   }
 
-  &__refresh-btn {
-    @include m.focus-ring;
-    font-size: v.$font-size-sm;
-    font-weight: v.$font-weight-medium;
-    color: v.$color-text-on-accent;
-    background-color: v.$color-accent;
+  &__cooldown {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-3;
+    background-color: v.$color-accent-subtle;
+    border: 1px solid v.$color-accent;
     border-radius: v.$radius-base;
-    padding: v.$spacing-2 v.$spacing-5;
-    transition: background-color v.$transition-fast, opacity v.$transition-fast;
+    padding: v.$spacing-4 v.$spacing-5;
+    color: v.$color-accent;
+    font-size: v.$font-size-sm;
+  }
 
-    &:hover:not(:disabled) {
-      background-color: v.$color-accent-hover;
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+  &__cooldown-icon {
+    font-size: v.$font-size-lg;
+    flex-shrink: 0;
   }
 
   &__error {
