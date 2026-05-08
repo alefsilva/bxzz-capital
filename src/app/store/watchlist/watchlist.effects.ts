@@ -15,9 +15,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { CoinGeckoService } from 'app/core/services/coin-gecko.service';
-import { TabSyncService } from 'app/core/services/tab-sync.service';
-import type { CoinMarket } from 'app/core/interfaces/coin.interface';
+import { CoinGeckoService } from '@src/app/core/services/coin-gecko.service';
+import { TabSyncService } from '@src/app/core/services/tab-sync.service';
+import type { CoinMarket } from '@src/app/core/interfaces/coin.interface';
 import {
   enterCooldown,
   loadPrices,
@@ -25,7 +25,7 @@ import {
   loadPricesSuccess,
 } from './watchlist.actions';
 import { selectLastUpdated } from './watchlist.selectors';
-import { CACHE_TTL_MS, COOLDOWN_MS } from 'app/core/constants/refresh.constants';
+import { CACHE_TTL_MS, COOLDOWN_MS } from '@src/app/core/constants/refresh.constants';
 import type { Action } from '@ngrx/store';
 
 @Injectable()

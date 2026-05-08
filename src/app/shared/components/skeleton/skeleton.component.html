@@ -1,35 +1,35 @@
-<div class="bxzz-capital-skeleton" [ngClass]="'bxzz-capital-skeleton--' + variant()">
+<div class="bc-skeleton" [ngClass]="'bc-skeleton--' + variant()">
 
   @if (variant() === 'card') {
-    <div class="bxzz-capital-skeleton__header">
-      <div class="bxzz-capital-skeleton__circle"></div>
-      <div class="bxzz-capital-skeleton__lines">
-        <div class="bxzz-capital-skeleton__line bxzz-capital-skeleton__line--wide"></div>
-        <div class="bxzz-capital-skeleton__line bxzz-capital-skeleton__line--narrow"></div>
+    <div class="bc-skeleton__header">
+      <div class="bc-skeleton__circle"></div>
+      <div class="bc-skeleton__lines">
+        <div class="bc-skeleton__line bc-skeleton__line--wide"></div>
+        <div class="bc-skeleton__line bc-skeleton__line--narrow"></div>
       </div>
     </div>
 
-    <div class="bxzz-capital-skeleton__body">
-      <div class="bxzz-capital-skeleton__line bxzz-capital-skeleton__line--full"></div>
-      <div class="bxzz-capital-skeleton__line bxzz-capital-skeleton__line--wide"></div>
+    <div class="bc-skeleton__body">
+      <div class="bc-skeleton__line bc-skeleton__line--full"></div>
+      <div class="bc-skeleton__line bc-skeleton__line--wide"></div>
     </div>
 
-    <div class="bxzz-capital-skeleton__footer">
-      <div class="bxzz-capital-skeleton__badge"></div>
-      <div class="bxzz-capital-skeleton__badge"></div>
+    <div class="bc-skeleton__footer">
+      <div class="bc-skeleton__badge"></div>
+      <div class="bc-skeleton__badge"></div>
     </div>
   }
 
   @if (variant() === 'line') {
-    <div class="bxzz-capital-skeleton__line bxzz-capital-skeleton__line--{{ width() }}"></div>
+    <div class="bc-skeleton__line bc-skeleton__line--{{ width() }}"></div>
   }
 
   @if (variant() === 'circle') {
-    <div class="bxzz-capital-skeleton__circle"></div>
+    <div class="bc-skeleton__circle"></div>
   }
 
   @if (variant() === 'badge') {
-    <div class="bxzz-capital-skeleton__badge"></div>
+    <div class="bc-skeleton__badge"></div>
   }
 
 </div>

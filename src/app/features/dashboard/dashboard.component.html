@@ -1,16 +1,16 @@
-<div class="bxzz-capital-dashboard">
+<div class="bc-dashboard">
 
-  <header class="bxzz-capital-dashboard__header">
-    <div class="bxzz-capital-dashboard__header-left">
-      <div class="bxzz-capital-dashboard__header-brand">
+  <header class="bc-dashboard__header">
+    <div class="bc-dashboard__header-left">
+      <div class="bc-dashboard__header-brand">
         <app-logo [size]="40" />
-        <h1 class="bxzz-capital-dashboard__title">BXZZ-Capital</h1>
+        <h1 class="bc-dashboard__title">BXZZ-Capital</h1>
       </div>
-      <span class="bxzz-capital-dashboard__subtitle">Gestão de Ativos Digitais</span>
+      <span class="bc-dashboard__subtitle">Gestão de Ativos Digitais</span>
     </div>
-    <div class="bxzz-capital-dashboard__header-right">
+    <div class="bc-dashboard__header-right">
       @if (lastUpdated()) {
-        <span class="bxzz-capital-dashboard__last-updated">
+        <span class="bc-dashboard__last-updated">
           Atualizado às {{ lastUpdated()! | date:'HH:mm:ss' }}
         </span>
       }
@@ -19,8 +19,8 @@
   </header>
 
   @if (isCooldown()) {
-    <div class="bxzz-capital-dashboard__cooldown" role="status">
-      <span class="bxzz-capital-dashboard__cooldown-icon">⚠</span>
+    <div class="bc-dashboard__cooldown" role="status">
+      <span class="bc-dashboard__cooldown-icon">⚠</span>
       <span>
         Limite de taxa da API atingido. Mantendo dados atuais para sua segurança.
         Próxima tentativa automática em <strong>{{ cooldownDisplay() }}</strong>...
@@ -29,8 +29,8 @@
   }
 
   @if (error() && !isCooldown()) {
-    <div class="bxzz-capital-dashboard__error" role="alert">
-      <span class="bxzz-capital-dashboard__error-icon">⚠</span>
+    <div class="bc-dashboard__error" role="alert">
+      <span class="bc-dashboard__error-icon">⚠</span>
       {{ error() }}
     </div>
   }
@@ -39,10 +39,10 @@
     <bc-portfolio-summary [summary]="summary" />
   }
 
-  <section class="bxzz-capital-dashboard__watchlist">
-    <h2 class="bxzz-capital-dashboard__section-title">Watchlist</h2>
+  <section class="bc-dashboard__watchlist">
+    <h2 class="bc-dashboard__section-title">Watchlist</h2>
 
-    <div class="bxzz-capital-dashboard__grid">
+    <div class="bc-dashboard__grid">
       @if (loading() && assets().length === 0) {
         @for (item of skeletonItems; track $index) {
           <bc-skeleton variant="card" />
@@ -51,7 +51,7 @@
         @for (asset of assets(); track asset.id) {
           <bc-asset-card [asset]="asset" />
         } @empty {
-          <p class="bxzz-capital-dashboard__empty">
+          <p class="bc-dashboard__empty">
             Nenhum ativo na watchlist.
           </p>
         }

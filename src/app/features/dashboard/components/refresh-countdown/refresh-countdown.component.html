@@ -1,22 +1,22 @@
 <div
-  class="bxzz-capital-refresh-countdown"
-  [class.bxzz-capital-refresh-countdown--urgent]="isUrgent()"
-  [class.bxzz-capital-refresh-countdown--syncing]="loading()"
+  class="bc-refresh-countdown"
+  [class.bc-refresh-countdown--urgent]="isUrgent()"
+  [class.bc-refresh-countdown--syncing]="loading()"
 >
   <svg
-    class="bxzz-capital-refresh-countdown__ring"
+    class="bc-refresh-countdown__ring"
     viewBox="0 0 20 20"
     width="20"
     height="20"
     aria-hidden="true"
   >
-    <circle class="bxzz-capital-refresh-countdown__track"    cx="10" cy="10" r="8" />
-    <circle class="bxzz-capital-refresh-countdown__progress" cx="10" cy="10" r="8"
+    <circle class="bc-refresh-countdown__track"    cx="10" cy="10" r="8" />
+    <circle class="bc-refresh-countdown__progress" cx="10" cy="10" r="8"
       transform="rotate(-90 10 10)"
       [style.stroke-dashoffset]="dashOffset()"
     />
   </svg>
-  <span class="bxzz-capital-refresh-countdown__text">
+  <span class="bc-refresh-countdown__text">
     @if (loading() || countdown() === 0) {
       Sincronizando...
     } @else {

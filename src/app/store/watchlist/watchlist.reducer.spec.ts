@@ -10,7 +10,7 @@ import {
   enterCooldown,
   clearCooldown,
 } from './watchlist.actions';
-import type { WatchlistAsset, CoinMarket } from 'app/core/interfaces/coin.interface';
+import type { WatchlistAsset, CoinMarket } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 

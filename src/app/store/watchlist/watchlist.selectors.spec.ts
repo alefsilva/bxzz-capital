@@ -7,7 +7,7 @@ import {
   selectIsInWatchlist,
 } from './watchlist.selectors';
 import { initialWatchlistState, WatchlistState } from './watchlist.state';
-import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
+import type { WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Factory ──────────────────────────────────────────────────────────────────
 

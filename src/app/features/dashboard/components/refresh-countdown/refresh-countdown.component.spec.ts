@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { RefreshCountdownComponent } from './refresh-countdown.component';
-import { initialWatchlistState } from 'app/store/watchlist/watchlist.state';
-import { selectLastUpdated, selectLoading } from 'app/store/watchlist/watchlist.selectors';
+import { initialWatchlistState } from '@src/app/store/watchlist/watchlist.state';
+import { selectLastUpdated, selectLoading } from '@src/app/store/watchlist/watchlist.selectors';
 
 describe('RefreshCountdownComponent', () => {
   let fixture:   ComponentFixture<RefreshCountdownComponent>;
@@ -12,13 +12,13 @@ describe('RefreshCountdownComponent', () => {
 
   function text(): string {
     return (fixture.nativeElement as HTMLElement)
-      .querySelector('.bxzz-capital-refresh-countdown__text')!
+      .querySelector('.bc-refresh-countdown__text')!
       .textContent!.trim();
   }
 
   function container(): Element {
     return (fixture.nativeElement as HTMLElement)
-      .querySelector('.bxzz-capital-refresh-countdown')!;
+      .querySelector('.bc-refresh-countdown')!;
   }
 
   function setStore(lastUpdated: number | null, loading = false): void {
@@ -173,19 +173,19 @@ describe('RefreshCountdownComponent', () => {
       const now = 1_000_000_000_000;
       jest.spyOn(Date, 'now').mockReturnValue(now);
       setStore(now - 297_000); // 3s remaining
-      expect(container().classList).toContain('bxzz-capital-refresh-countdown--urgent');
+      expect(container().classList).toContain('bc-refresh-countdown--urgent');
     });
 
     it('should apply --syncing modifier when loading', () => {
       setStore(null, true);
-      expect(container().classList).toContain('bxzz-capital-refresh-countdown--syncing');
+      expect(container().classList).toContain('bc-refresh-countdown--syncing');
     });
 
     it('should NOT apply --urgent modifier when loading', () => {
       const now = 1_000_000_000_000;
       jest.spyOn(Date, 'now').mockReturnValue(now);
       setStore(now - 297_000, true);
-      expect(container().classList).not.toContain('bxzz-capital-refresh-countdown--urgent');
+      expect(container().classList).not.toContain('bc-refresh-countdown--urgent');
     });
   });
 });

@@ -5,8 +5,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { NEVER, Subject, of, throwError } from 'rxjs';
 
 import { WatchlistEffects } from './watchlist.effects';
-import { CoinGeckoService } from 'app/core/services/coin-gecko.service';
-import { TabSyncService } from 'app/core/services/tab-sync.service';
+import { CoinGeckoService } from '@src/app/core/services/coin-gecko.service';
+import { TabSyncService } from '@src/app/core/services/tab-sync.service';
 import {
   enterCooldown,
   loadPrices,
@@ -14,7 +14,7 @@ import {
   loadPricesSuccess,
 } from './watchlist.actions';
 import { initialWatchlistState } from './watchlist.state';
-import type { CoinMarket } from 'app/core/interfaces/coin.interface';
+import type { CoinMarket } from '@src/app/core/interfaces/coin.interface';
 
 // ─── Factory ──────────────────────────────────────────────────────────────────
 

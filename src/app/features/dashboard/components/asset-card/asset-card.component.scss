@@ -2,7 +2,7 @@
 @use 'styles/mixins' as m;
 
 // ─── Block ────────────────────────────────────────────────────────────────────
-.bxzz-capital-asset-card {
+.bc-asset-card {
   @include m.card-surface;
   @include m.flex-column;
   gap: v.$spacing-4;

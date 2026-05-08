@@ -6,7 +6,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { interval, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
-import { loadPrices, addToWatchlist } from 'app/store/watchlist/watchlist.actions';
+import { loadPrices, addToWatchlist } from '@src/app/store/watchlist/watchlist.actions';
 import {
   selectAllAssets,
   selectLoading,
@@ -15,14 +15,14 @@ import {
   selectLastUpdated,
   selectCooldownUntil,
   selectIsCooldown,
-} from 'app/store/watchlist/watchlist.selectors';
+} from '@src/app/store/watchlist/watchlist.selectors';
 import { DatePipe } from '@angular/common';
 import { AssetCardComponent } from './components/asset-card/asset-card.component';
 import { PortfolioSummaryComponent } from './components/portfolio-summary/portfolio-summary.component';
-import { SkeletonComponent } from 'app/shared/components/skeleton/skeleton.component';
-import { LogoComponent } from 'app/shared/components/logo/logo.component';
+import { SkeletonComponent } from '@src/app/shared/components/skeleton/skeleton.component';
+import { LogoComponent } from '@src/app/shared/components/logo/logo.component';
 import { RefreshCountdownComponent } from './components/refresh-countdown/refresh-countdown.component';
-import type { WatchlistAsset } from 'app/core/interfaces/coin.interface';
+import type { WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 /**
  * Smart Component — único ponto de contato com o Store nesta feature.

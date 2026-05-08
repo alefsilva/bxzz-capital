@@ -11,7 +11,7 @@ import {
   clearCooldown,
 } from './watchlist.actions';
 import { initialWatchlistState } from './watchlist.state';
-import type { WatchlistAsset } from 'app/core/interfaces/coin.interface';
+import type { WatchlistAsset } from '@src/app/core/interfaces/coin.interface';
 
 export const watchlistReducer = createReducer(
   initialWatchlistState,

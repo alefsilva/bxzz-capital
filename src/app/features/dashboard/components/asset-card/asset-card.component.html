@@ -1,40 +1,40 @@
-<article class="bxzz-capital-asset-card">
+<article class="bc-asset-card">
 
-  <header class="bxzz-capital-asset-card__header">
+  <header class="bc-asset-card__header">
     <img
-      class="bxzz-capital-asset-card__logo"
+      class="bc-asset-card__logo"
       [src]="asset().image"
       [alt]="asset().name"
       width="36"
       height="36"
       loading="lazy"
     />
-    <div class="bxzz-capital-asset-card__identity">
-      <span class="bxzz-capital-asset-card__name">{{ asset().name }}</span>
-      <span class="bxzz-capital-asset-card__symbol">{{ asset().symbol | uppercase }}</span>
+    <div class="bc-asset-card__identity">
+      <span class="bc-asset-card__name">{{ asset().name }}</span>
+      <span class="bc-asset-card__symbol">{{ asset().symbol | uppercase }}</span>
     </div>
-    <span class="bxzz-capital-asset-card__rank">#{{ asset().market_cap_rank }}</span>
+    <span class="bc-asset-card__rank">#{{ asset().market_cap_rank }}</span>
   </header>
 
-  <div class="bxzz-capital-asset-card__price-row">
-    <span class="bxzz-capital-asset-card__price">
+  <div class="bc-asset-card__price-row">
+    <span class="bc-asset-card__price">
       {{ asset().current_price | currency:'USD':'symbol':'1.2-6' }}
     </span>
-    <span class="bxzz-capital-asset-card__change" [ngClass]="priceChangeClass()">
+    <span class="bc-asset-card__change" [ngClass]="priceChangeClass()">
       {{ priceChangeSign() }}{{ asset().price_change_percentage_24h | number:'1.2-2' }}%
     </span>
   </div>
 
-  <div class="bxzz-capital-asset-card__stats">
-    <div class="bxzz-capital-asset-card__stat">
-      <span class="bxzz-capital-asset-card__stat-label">Volume 24h</span>
-      <span class="bxzz-capital-asset-card__stat-value">
+  <div class="bc-asset-card__stats">
+    <div class="bc-asset-card__stat">
+      <span class="bc-asset-card__stat-label">Volume 24h</span>
+      <span class="bc-asset-card__stat-value">
         {{ asset().total_volume | currency:'USD':'symbol':'1.0-0' }}
       </span>
     </div>
-    <div class="bxzz-capital-asset-card__stat">
-      <span class="bxzz-capital-asset-card__stat-label">Mín / Máx 24h</span>
-      <span class="bxzz-capital-asset-card__stat-value">
+    <div class="bc-asset-card__stat">
+      <span class="bc-asset-card__stat-label">Mín / Máx 24h</span>
+      <span class="bc-asset-card__stat-value">
         {{ asset().low_24h | currency:'USD':'symbol':'1.2-2' }}
         /
         {{ asset().high_24h | currency:'USD':'symbol':'1.2-2' }}
@@ -42,16 +42,16 @@
     </div>
   </div>
 
-  <footer class="bxzz-capital-asset-card__footer">
-    <div class="bxzz-capital-asset-card__holding">
-      <span class="bxzz-capital-asset-card__stat-label">Posição</span>
-      <span class="bxzz-capital-asset-card__stat-value">
+  <footer class="bc-asset-card__footer">
+    <div class="bc-asset-card__holding">
+      <span class="bc-asset-card__stat-label">Posição</span>
+      <span class="bc-asset-card__stat-value">
         {{ asset().quantity | number:'1.4-8' }} {{ asset().symbol | uppercase }}
       </span>
     </div>
-    <div class="bxzz-capital-asset-card__pnl" [ngClass]="profitLossClass()">
-      <span class="bxzz-capital-asset-card__stat-label">P&L</span>
-      <span class="bxzz-capital-asset-card__pnl-value">
+    <div class="bc-asset-card__pnl" [ngClass]="profitLossClass()">
+      <span class="bc-asset-card__stat-label">P&L</span>
+      <span class="bc-asset-card__pnl-value">
         {{ profitLoss() | currency:'USD':'symbol':'1.2-2' }}
       </span>
     </div>
