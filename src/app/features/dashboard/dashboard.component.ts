@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Title, Meta } from '@angular/platform-browser';
 
 import { loadPrices, addToWatchlist } from '../../store/watchlist/watchlist.actions';
 import {
@@ -35,7 +36,9 @@ import type { WatchlistAsset } from '../../core/interfaces/coin.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-  private readonly store = inject(Store);
+  private readonly store    = inject(Store);
+  private readonly titleSvc = inject(Title);
+  private readonly metaSvc  = inject(Meta);
 
   // Signals derivados dos seletores NgRx — integração via toSignal()
   readonly assets           = toSignal(this.store.select(selectAllAssets), { initialValue: [] });
@@ -48,6 +51,11 @@ export class DashboardComponent implements OnInit {
   readonly skeletonItems = Array.from({ length: 6 });
 
   ngOnInit(): void {
+    this.titleSvc.setTitle('BXZZ Capital — Gestão de Ativos Digitais');
+    this.metaSvc.updateTag({ name: 'description',        content: 'Acompanhe sua carteira de criptomoedas em tempo real com BXZZ Capital.' });
+    this.metaSvc.updateTag({ property: 'og:title',       content: 'BXZZ Capital — Gestão de Ativos Digitais' });
+    this.metaSvc.updateTag({ property: 'og:description', content: 'Acompanhe sua carteira de criptomoedas em tempo real.' });
+    this.metaSvc.updateTag({ property: 'og:url',         content: 'https://alefsilva.github.io/bxzz-capital/' });
     this.seedInitialWatchlist();
     this.store.dispatch(loadPrices());
   }
