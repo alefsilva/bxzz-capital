@@ -8,7 +8,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  skip,
   switchMap,
   take,
   tap,
@@ -120,10 +119,10 @@ export class WatchlistEffects {
       switchMap(() =>
         this.tabSync.messages$.pipe(
           switchMap((msg) => {
-            if (msg.type === 'prices-updated') {
+            if (msg.type === 'prices-updated' && Array.isArray(msg.coins) && typeof msg.lastUpdated === 'number') {
               return of(loadPricesSuccess({ coins: msg.coins, lastUpdated: msg.lastUpdated }));
             }
-            if (msg.type === 'cooldown-started') {
+            if (msg.type === 'cooldown-started' && typeof msg.cooldownUntil === 'number') {
               return of(enterCooldown({ cooldownUntil: msg.cooldownUntil }));
             }
             return EMPTY;
@@ -176,9 +175,10 @@ export class WatchlistEffects {
   );
 
   /**
-   * Quando uma Seguidora assume a liderança (após a Líder fechar),
-   * ela retoma o ciclo de refresh com base no estado atual do cache.
-   * skip(1): ignora a primeira emissão da eleição inicial (tratada pelo loadPrices do ngOnInit).
+   * Retoma o ciclo de refresh ao assumir liderança — tanto no boot inicial
+   * quanto na transição follower→leader (quando a aba líder fecha).
+   * Sem skip(1): trata também o cold-start onde isLeader era false no ngOnInit
+   * e loadPrices$ retornou EMPTY antes de afterNextRender() completar.
    */
   onBecomeLeader$ = createEffect(() =>
     this.renderReady$.pipe(
@@ -186,10 +186,11 @@ export class WatchlistEffects {
       switchMap(() =>
         this.tabSync.isLeader$.pipe(
           distinctUntilChanged(),
-          skip(1),
           filter((isLeader) => isLeader),
           withLatestFrom(this.store.select(selectLastUpdated)),
           switchMap(([, lastUpdated]) => {
+            if (!isPlatformBrowser(this.platformId)) return EMPTY;
+
             // Se ainda em cooldown, cooldownExpired$ já tem um timer ativo
             const storedCooldown = Number(localStorage.getItem(this.COOLDOWN_KEY) ?? 0);
             if (storedCooldown > Date.now()) return EMPTY;

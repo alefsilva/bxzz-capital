@@ -50,8 +50,7 @@ export class TabSyncService {
     if (!this.isBrowser) return;
 
     this.channel = new BroadcastChannel(this.CHANNEL_NAME);
-    this.channel.onmessage = (event: MessageEvent<TabMessage>) =>
-      this.handleMessage(event.data);
+    this.channel.onmessage = ({ data }: MessageEvent) => this.handleMessage(data);
 
     this.tryClaimLeadership();
 
@@ -62,17 +61,31 @@ export class TabSyncService {
     this.channel?.postMessage(msg);
   }
 
-  private handleMessage(msg: TabMessage): void {
-    this._messages$.next(msg);
+  private handleMessage(data: unknown): void {
+    if (!this.isValidTabMessage(data)) return;
 
-    if (msg.type === 'heartbeat') {
+    this._messages$.next(data);
+
+    if (data.type === 'heartbeat') {
       // Outra aba já é líder; se esta também reivindicou liderança (colisão),
       // o tabId menor ganha — resolve race condition sem coordenação externa
-      if (this._isLeader$.value && msg.tabId < this.tabId) {
+      if (this._isLeader$.value && data.tabId < this.tabId) {
         this._isLeader$.next(false);
       }
-    } else if (msg.type === 'leader-stepping-down') {
+    } else if (data.type === 'leader-stepping-down') {
       this.electNewLeader();
+    }
+  }
+
+  private isValidTabMessage(data: unknown): data is TabMessage {
+    if (!data || typeof data !== 'object') return false;
+    const msg = data as Record<string, unknown>;
+    switch (msg['type']) {
+      case 'heartbeat':            return typeof msg['tabId'] === 'string';
+      case 'prices-updated':       return Array.isArray(msg['coins']) && typeof msg['lastUpdated'] === 'number';
+      case 'cooldown-started':     return typeof msg['cooldownUntil'] === 'number';
+      case 'leader-stepping-down': return typeof msg['tabId'] === 'string';
+      default: return false;
     }
   }
 
