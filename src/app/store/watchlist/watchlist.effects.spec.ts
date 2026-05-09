@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Action } from '@ngrx/store';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { NEVER, Subject, of, throwError } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 
 import { WatchlistEffects } from './watchlist.effects';
 import { CoinGeckoService } from '@src/app/core/services/coin-gecko.service';
@@ -378,6 +378,87 @@ describe('WatchlistEffects — BXZZ Capital', () => {
 
       expect(emitted).toBe(false);
     });
+
+    // ── 15. prices-updated sem coins — deve ser ignorado (double-guard) ──
+
+    it('should not emit when prices-updated message is missing coins', () => {
+      let emitted = false;
+      effects.broadcastSync$.subscribe(() => { emitted = true; });
+
+      (effects as any).renderReady$.next();
+
+      tabSyncMock._messages$.next({ type: 'prices-updated', lastUpdated: Date.now() } as any);
+
+      expect(emitted).toBe(false);
+    });
+
+    // ── 16. prices-updated sem lastUpdated — deve ser ignorado (double-guard) ──
+
+    it('should not emit when prices-updated message is missing lastUpdated', () => {
+      let emitted = false;
+      effects.broadcastSync$.subscribe(() => { emitted = true; });
+
+      (effects as any).renderReady$.next();
+
+      tabSyncMock._messages$.next({ type: 'prices-updated', coins: [makeCoin()] } as any);
+
+      expect(emitted).toBe(false);
+    });
+
+    // ── 17. Tipo de mensagem completamente desconhecido — deve ser ignorado ──
+
+    it('should not emit for a completely unknown message type', () => {
+      let emitted = false;
+      effects.broadcastSync$.subscribe(() => { emitted = true; });
+
+      (effects as any).renderReady$.next();
+
+      tabSyncMock._messages$.next({ type: 'unknown-future-type', data: 'anything' } as any);
+
+      expect(emitted).toBe(false);
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // onBecomeLeader$
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  describe('onBecomeLeader$', () => {
+
+    // ── 18. Cold-start como líder sem cache — dispara loadPrices imediatamente ──
+
+    it('should dispatch loadPrices immediately on cold-start as leader with no cache and no lastUpdated', (done) => {
+      // Simula: isLeader$ emite true logo após renderReady$ (sem skip(1) o efeito deve reagir)
+      const isLeader$ = new Subject<boolean>();
+      TestBed.resetTestingModule();
+      actions$ = new Subject<Action>();
+
+      const leaderMock = {
+        ...makeTabSyncMock(true),
+        isLeader$: isLeader$.asObservable(),
+      };
+
+      TestBed.configureTestingModule({
+        providers: [
+          WatchlistEffects,
+          provideMockActions(() => actions$),
+          provideMockStore({ initialState: { watchlist: initialWatchlistState } }), // lastUpdated: null
+          { provide: CoinGeckoService, useValue: serviceMock },
+          { provide: TabSyncService,   useValue: leaderMock },
+        ],
+      });
+
+      const leaderEffects = TestBed.inject(WatchlistEffects);
+
+      leaderEffects.onBecomeLeader$.subscribe((action) => {
+        expect(action).toEqual(loadPrices());
+        done();
+      });
+
+      // Simula afterNextRender(): primeiro init() elege líder, depois renderReady$ emite
+      (leaderEffects as any).renderReady$.next();
+      isLeader$.next(true); // tab acabou de virar líder no boot
+    });
   });
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -386,7 +467,7 @@ describe('WatchlistEffects — BXZZ Capital', () => {
 
   describe('broadcastPrices$', () => {
 
-    // ── 15. Líder transmite preços para seguidoras após loadPricesSuccess ──
+    // ── 19. Líder transmite preços para seguidoras após loadPricesSuccess ──
 
     it('should call tabSync.broadcast with prices-updated after loadPricesSuccess as leader', () => {
       const coins       = [makeCoin()];

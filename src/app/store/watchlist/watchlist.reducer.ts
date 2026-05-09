@@ -35,11 +35,11 @@ export const watchlistReducer = createReducer(
 
   on(loadPricesSuccess, (state, { coins, lastUpdated }) => ({
     ...state,
-    loading:  false,
-    lastUpdated,
+    loading:     false,
+    lastUpdated: lastUpdated ?? state.lastUpdated,
     // Merge imutável: atualiza preços dos ativos já existentes na watchlist
     assets: state.assets.map((asset) => {
-      const updated = coins.find((c) => c.id === asset.id);
+      const updated = (coins ?? []).find((c) => c.id === asset.id);
       return updated
         ? ({ ...asset, ...updated } as WatchlistAsset)
         : asset;

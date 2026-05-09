@@ -182,6 +182,17 @@ describe('watchlistReducer — BXZZ Capital', () => {
       expect(afterSuccess.lastUpdated).not.toBeNull();
     });
 
+    it('should not throw and should preserve assets when coins is undefined (defensive)', () => {
+      const asset    = makeAsset();
+      const withAsset = watchlistReducer(initialWatchlistState, addToWatchlist({ asset }));
+      // Simula payload corrompido que chegaria via BroadcastChannel malformado
+      const state = watchlistReducer(withAsset, loadPricesSuccess({ coins: undefined as any, lastUpdated: Date.now() }));
+
+      expect(state.loading).toBe(false);
+      expect(state.assets).toHaveLength(1);
+      expect(state.assets[0].id).toBe('bitcoin');
+    });
+
     it('should preserve purchasePrice and quantity after a price update', () => {
       const asset        = makeAsset({ purchasePrice: 42000, quantity: 0.5 });
       const updatedCoin  = makeCoinMarket({ current_price: 60000 });
